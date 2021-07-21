@@ -37,7 +37,15 @@ class UserInfo:
         sel = sql_dql(ssql)
         sbg = sel[0][0]
         if sbg < 20:
-            Wife(self.user_id).get_new_wife()
+            flag = Wife(self.user_id).get_new_wife()
+            if flag==False:
+                return "WifeNumError"
+            else:
+                return "OK"
+        else:
+            return "UserSbgDoNotEnought"
+            
+
 
     # 展示自己的后宫
     def show_wifes(self):
@@ -100,9 +108,8 @@ class Wife:
         sql = f"insert into wife_attribute (user_id,wife_id,wife_life,wife_mood,wife_link,wife_marry,wife_sick)"
         sql += f"values('{self.user_id}','{wife_id}',100,'平静',0,'0','0')"
         sql_dml(sql)
-
         print(msg)
-
+        return True
     # 销毁...
     def __del__(self):
         class_name = self.__class__.__name__
@@ -129,3 +136,28 @@ class DataBase:
 
         wife_id = f"wife{wife_total}_id"
         return wife_id
+
+    # 定时任务
+    def on_time_under_do(self):
+        sql=[
+            "update wife_attribute set wife_sick=wife_sick+1 where wife_mood='平静'",
+            "update wife_attribute set wife_sick=wife_sick-1 where wife_mood='开心' and wife_sick>1",
+            "update wife_attribute set wife_sick=wife_sick-2 where wife_mood='极乐' and wife_sick>2",
+            "update wife_attribute set wife_sick=wife_sick+2 where wife_mood='低落'",
+            "update wife_attribute set wife_sick=wife_sick+4 where wife_mood='悲伤'",
+            "update wife_attribute set wife_life=wife_life-1 where wife_sick>20 and wife_life>1",
+            "update wife_attribute set wife_life=wife_life-2 where wife_sick>40 and wife_life>2",
+            "update wife_attribute set wife_life=wife_life-3 where wife_sick>100 and wife_life>3",
+            "update wife_attribute set wife_life=wife_life-5 where wife_sick>200 and wife_life>5",
+            "update wife_attribute set wife_link=wife_link+1 where wife_mood='平静'",
+            "update wife_attribute set wife_link=wife_link+2 where wife_mood='开心'",
+            "update wife_attribute set wife_link=wife_link+3 where wife_mood='极乐'",
+            "update wife_attribute set wife_link=wife_link-2 where wife_mood='低落'",
+            "update wife_attribute set wife_link=wife_link-7 where wife_mood='悲伤'"
+        ]
+        for item in sql:
+            sql_dml(item)
+
+
+
+DataBase('1157529280').on_time_under_do()
