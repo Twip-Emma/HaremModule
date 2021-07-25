@@ -41,8 +41,10 @@ class UserInfo:
             if flag==False:
                 return "WifeNumError"
             else:
+                sql = f"""update user_info set user_sbg=user_sbg+50 where user_id='{self.user_id}'"""
+                sql_dml(sql)
                 return "OK"
-        else:
+        else:            
             return "UserSbgDoNotEnought"
             
 
@@ -128,6 +130,7 @@ class DataBase:
         self.user_wife = [sel[0][4], sel[0][5],
                           sel[0][6], sel[0][7], sel[0][8]]
 
+    # 获取新老婆的id
     def get_wife_num(self):
         wife_total = 1
         for item in self.user_wife:
@@ -136,6 +139,14 @@ class DataBase:
 
         wife_id = f"wife{wife_total}_id"
         return wife_id
+
+    # 心情变化
+    def wife_mood_change(self,wife_id,moodc):
+        pass
+
+    # 情感变化
+    def wife_link_change(self,wife_id,linkc):
+        pass
 
     # 定时任务
     def on_time_under_do(self):
@@ -157,6 +168,8 @@ class DataBase:
         ]
         for item in sql:
             sql_dml(item)
+
+
 
 
 
