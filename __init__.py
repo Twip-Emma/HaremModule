@@ -1,8 +1,8 @@
 '''
 Author: your name
 Date: 2021-07-17 09:57:53
-LastEditTime: 2021-07-17 10:02:57
-LastEditors: Please set LastEditors
+LastEditTime: 2022-01-29 12:56:20
+LastEditors: 七画一只妖
 Description: In User Settings Edit
 FilePath: \027MyWife\__init__.py
 '''
@@ -22,3 +22,5 @@ a = UserInfo(user_id,user_name)
 a.show_wifes()
 a.get_new_wife_check()
 # b = UserInfo(user_id,user_name).get_new_wife_check()
+
+# 测试
